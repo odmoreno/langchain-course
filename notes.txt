@@ -25,3 +25,13 @@ packages:
 api keys
  https://aistudio.google.com/app/apikey
  https://platform.openai.com
+
+
+ gemma3:270m
+ ollama pull gemma3:270m
+ ollama list
+ ollama run gemma3:270m
+
+
+
+langsmith
