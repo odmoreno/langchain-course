@@ -35,3 +35,7 @@ api keys
 
 
 langsmith
+
+package for react search agent:
+  uv init
+  uv add langchain langchain-openai langchain-tavily python-dotenv black isort
