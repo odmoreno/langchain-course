@@ -12,6 +12,7 @@ rm 'static/LangGraph wordmark - dark.svg'
 
 https://docs.astral.sh/uv/
 
+
  .\.venv\Scripts\activate
 
 
@@ -20,7 +21,7 @@ packages:
  uv add langchain
  uv add langchain-openai
  uv add python-dotenv black isort
-  uv add langchain-ollama -> free
+ uv add langchain-ollama -> free
 
 api keys
  https://aistudio.google.com/app/apikey
@@ -32,6 +33,8 @@ api keys
  ollama list
  ollama run gemma3:270m
 
-
-
 langsmith
+
+
+pipenv shell
+pipenv install langchain langchain-openai black python-dotenv
