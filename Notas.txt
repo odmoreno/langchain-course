@@ -27,11 +27,14 @@ api keys
  https://aistudio.google.com/app/apikey
  https://platform.openai.com
 
-
+models llama
  gemma3:270m
- ollama pull gemma3:270m
- ollama list
- ollama run gemma3:270m
+ llama3.1:8b
+
+ollama console
+  ollama pull gemma3:270m
+  ollama list
+  ollama run gemma3:270m
 
 langsmith
 
