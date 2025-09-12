@@ -17,11 +17,13 @@ https://docs.astral.sh/uv/
 
 
  uv init
+ uv sync
 packages:
  uv add langchain
  uv add langchain-openai
  uv add python-dotenv black isort
  uv add langchain-ollama -> free
+ uv add langchain-google-genai
 
 api keys
  https://aistudio.google.com/app/apikey
@@ -41,3 +43,16 @@ langsmith
 
 pipenv shell
 pipenv install langchain langchain-openai black python-dotenv
+
+
+
+
+codigo viejo
+    # llm = ChatOllama(
+    #    temperature=0, model="llama3.1:8b", stop=["\nObservation", "Observation"]
+    # )
+
+    # llm = ChatOpenAI(
+    #    temperature=0,
+    #    stop=["\nObservation", "Observation"],
+    # )
