@@ -1,4 +1,10 @@
 
+listar:
+  git branch
+REmover:
+  git branch -d nombre_rama
+
+
 USER@PCWORK MINGW64 ~/Documents/udemy/langchain course/langchain-course (main)
 $ git checkout --orphan project/hello-world
 Switched to a new branch 'project/hello-world'
