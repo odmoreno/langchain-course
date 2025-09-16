@@ -1,0 +1,8 @@
+uv init
+ uv add langchain-openai langchain-community langchainhub faiss-cpu langchain-google-genai black python-dotenv
+    add pypdf
+
+
+docs:
+https://faiss.ai/
+https://python.langchain.com/docs/how_to/document_loader_pdf/
