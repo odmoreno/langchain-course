@@ -1,0 +1,46 @@
+
+listar:
+  git branch
+REmover:
+  git branch -d nombre_rama
+
+
+USER@PCWORK MINGW64 ~/Documents/udemy/langchain course/langchain-course (main)
+$ git checkout --orphan project/hello-world
+Switched to a new branch 'project/hello-world'
+
+$ git rm -rf .
+rm 'LICENSE'
+rm 'README.md'
+rm 'static/LangChain-logo.svg'
+rm 'static/LangGraph wordmark - dark.svg'
+
+
+https://docs.astral.sh/uv/
+
+ .\.venv\Scripts\activate
+
+
+ uv init
+packages:
+ uv add langchain
+ uv add langchain-openai
+ uv add python-dotenv black isort
+  uv add langchain-ollama -> free
+  uv add langchain-google-genai
+
+uv add langchain langchain-openai langchain-tavily langgraph langchain-google-genai python-dotenv black isort
+
+api keys
+ https://aistudio.google.com/app/apikey
+ https://platform.openai.com
+
+
+ gemma3:270m
+ ollama pull gemma3:270m
+ ollama list
+ ollama run gemma3:270m
+
+
+
+langsmith
