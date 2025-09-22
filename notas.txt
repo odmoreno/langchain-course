@@ -44,3 +44,5 @@ api keys
 
 
 langsmith
+
+https://ai.google.dev/gemini-api/docs/models?hl=es-419

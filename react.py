@@ -20,4 +20,4 @@ tools = [TavilySearch(max_results=1), triple]
 
 # llm = ChatOpenAI(model="gpt-4o-mini", temperature=0).bind_tools(tools)
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash", temperature=0).bind_tools(tools)
+    model="gemini-2.5-pro", temperature=0).bind_tools(tools)
