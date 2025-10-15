@@ -1,18 +1,9 @@
-from typing import List, Union
+from typing import List
 
 from dotenv import load_dotenv
-
-# from langchain_ollama import ChatOllama
+from langchain_core.messages import HumanMessage, ToolMessage
+from langchain_core.tools import tool, Tool
 from langchain_google_genai import ChatGoogleGenerativeAI
-
-
-from langchain.agents.format_scratchpad import format_log_to_str
-from langchain.agents.output_parsers import ReActSingleInputOutputParser
-from langchain_core.agents import AgentAction, AgentFinish
-from langchain_core.prompts import PromptTemplate
-from langchain_core.tools import Tool, tool, render_text_description
-from langchain_openai import ChatOpenAI
-
 
 from callbacks import AgentCallbackHandler
 
@@ -28,81 +19,54 @@ def get_text_length(text: str) -> int:
     )  # stripping away non alphabetic characters just in case
     return len(text)
 
-
 def find_tool_by_name(tools: List[Tool], tool_name: str) -> Tool:
     for tool in tools:
         if tool.name == tool_name:
             return tool
     raise ValueError(f"Tool wtih name {tool_name} not found")
 
-
 def main():
-    print("Hello from langchain-course!")
+    print("Hello LangChain Tools (.bind_tools)!")
     tools = [get_text_length]
 
-    template = """
-    Answer the following questions as best you can. You have access to the following tools:
-
-    {tools}
-
-    Use the following format:
-
-    Question: the input question you must answer
-    Thought: you should always think about what to do
-    Action: the action to take, should be one of [{tool_names}]
-    Action Input: the input to the action
-    Observation: the result of the action
-    ... (this Thought/Action/Action Input/Observation can repeat N times)
-    Thought: I now know the final answer
-    Final Answer: the final answer to the original input question
-
-    Begin!
-
-    Question: {input}
-    Thought: {agent_scratchpad}
-    """
-
-    prompt = PromptTemplate.from_template(template=template).partial(
-        tools=render_text_description(tools),
-        tool_names=", ".join([t.name for t in tools]),
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        callbacks=[AgentCallbackHandler()],
     )
 
-    llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", callbacks=[AgentCallbackHandler()]).bind(
-        stop=["\nObservation:", "Observation:"]
-    )
-    intermediate_steps = []
+    llm_with_tools = llm.bind_tools(tools)
 
-    agent = (
-        {
-            "input": lambda x: x["input"],
-            "agent_scratchpad": lambda x: format_log_to_str(x["agent_scratchpad"]),
-        }
-        | prompt
-        | llm
-        | ReActSingleInputOutputParser()
-    )
+    # Start conversation
+    messages = [HumanMessage(content="What is the length of the word: DOG")]
 
-    agent_step = ""
-    while not isinstance(agent_step, AgentFinish):
-        agent_step: Union[AgentAction, AgentFinish] = agent.invoke(
-            {
-                "input": "What is the length of the word: DOG",
-                "agent_scratchpad": intermediate_steps,
-            }
-        )
-        print(agent_step)
+    while True:
+        ai_message = llm_with_tools.invoke(messages)
 
-        if isinstance(agent_step, AgentAction):
-            tool_name = agent_step.tool
-            tool_to_use = find_tool_by_name(tools, tool_name)
-            tool_input = agent_step.tool_input
+        # If the model decides to call tools, execute them and return results
+        tool_calls = getattr(ai_message, "tool_calls", None) or []
+        if len(tool_calls) > 0:
+            messages.append(ai_message)
+            for tool_call in tool_calls:
+                # tool_call is typically a dict with keys: id, type, name, args
+                tool_name = tool_call.get("name")
+                tool_args = tool_call.get("args", {})
+                tool_call_id = tool_call.get("id")
 
-            observation = tool_to_use.func(str(tool_input))
-            print(f"{observation=}")
-            intermediate_steps.append((agent_step, str(observation)))
+                tool_to_use = find_tool_by_name(tools, tool_name)
+                observation = tool_to_use.invoke(tool_args)
+                print(f"observation={observation}")
 
-    if isinstance(agent_step, AgentFinish):
-        print(agent_step.return_values)
+                messages.append(
+                    ToolMessage(content=str(observation),
+                                tool_call_id=tool_call_id)
+                )
+            # Continue loop to allow the model to use the observations
+            continue
+
+        # No tool calls -> final answer
+        print(ai_message.content)
+        break
+
 
 if __name__ == "__main__":
     main()
