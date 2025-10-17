@@ -1,0 +1,84 @@
+
+USER@PCWORK MINGW64 ~/Documents/udemy/langchain course/langchain-course (main)
+$ git checkout --orphan project/hello-world
+Switched to a new branch 'project/hello-world'
+
+$ git rm -rf .
+rm 'LICENSE'
+rm 'README.md'
+rm 'static/LangChain-logo.svg'
+rm 'static/LangGraph wordmark - dark.svg'
+
+
+https://docs.astral.sh/uv/
+
+
+ .\.venv\Scripts\activate
+
+
+ uv init
+ uv sync
+packages:
+ uv add langchain
+ uv add langchain-openai
+ uv add python-dotenv black isort
+ uv add langchain-ollama -> free
+ uv add langchain-google-genai
+
+api keys
+ https://aistudio.google.com/app/apikey
+ https://platform.openai.com
+
+models llama
+ gemma3:270m
+ llama3.1:8b
+
+ollama console
+  ollama pull gemma3:270m
+  ollama list
+  ollama run gemma3:270m
+
+langsmith
+
+
+pipenv shell
+pipenv install langchain langchain-openai black python-dotenv
+
+
+
+
+codigo viejo
+    # llm = ChatOllama(
+    #    temperature=0, model="llama3.1:8b", stop=["\nObservation", "Observation"]
+    # )
+
+    # llm = ChatOpenAI(
+    #    temperature=0,
+    #    stop=["\nObservation", "Observation"],
+    # )
+
+
+Tests>
+
+PS E:\Repo\udemy\langchain course\langchain-course> .\.venv\Scripts\activate
+(langchain-course) PS E:\Repo\udemy\langchain course\langchain-course> python .\main.py
+Hello LangChain Tools (.bind_tools)!
+Key 'title' is not supported in schema, ignoring
+Key 'title' is not supported in schema, ignoring
+***Prompt to LLM was:***
+Human: What is the length of the word: DOG
+*********
+***LLM Response:***
+
+*********
+get_text_length enter with text='DOG'
+observation=3
+***Prompt to LLM was:***
+Human: What is the length of the word: DOG
+AI: {'name': 'get_text_length', 'arguments': '{"text": "DOG"}'}
+Tool: 3
+*********
+***LLM Response:***
+The word "DOG" has a length of 3 characters.
+*********
+The word "DOG" has a length of 3 characters.
